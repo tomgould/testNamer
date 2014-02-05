@@ -65,8 +65,14 @@
     Env.colors = ['#000000', '#FF0000', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF']; //List the hex codes you want to loop through here.
     Env.color_index = 0;
     Env.interval = 10; //How long the color blend transition lasts. (in milliseconds, 1000 = 1 second)
-
+    Env.stop = false;
+    
     function bg_color_tween(stop) {
+      if (Env.stop) {
+        Env.stop = false;
+        $('body').css('backgroundColor', '#000000');
+        return;
+      }
       $('body').animate({ backgroundColor: Env.colors[Env.color_index] }, Env.interval, 'linear',
       $.proxy(function() {
         if(Env.color_index == Env.colors.length) {
@@ -94,8 +100,11 @@
         $('#stop_party_time').css('display','block');
       });
 
-       $('#stop_party_time').on('click', function(event){
-        alert("TOO BAD");
+      $('#stop_party_time').on('click', function(event){
+        Env.stop = true;
+        event.preventDefault();
+        $(this).hide();
+        $('#party_time').show();
       });
 
       $('#fix_me').on('keyup', function(event){
